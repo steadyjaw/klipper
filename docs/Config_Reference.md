@@ -3349,6 +3349,12 @@ lcd_type:
 #x_offset: 0
 #   Set the horizontal offset value on SH1106 displays. The default is
 #   0.
+#display_size:
+#   Set size of the display. Depending on the sizei, the displays
+#   needs to be initialized differently. There are following choices
+#   "full" for 128x64, "half" for 128x32 SSD1306 displays. You may use
+#   "display_groups" when using half-sized displays. The default is
+#   "full".
 ...
 ```
 

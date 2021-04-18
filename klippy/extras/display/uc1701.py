@@ -209,6 +209,12 @@ class SSD1306(DisplayBase):
         self.contrast = config.getint('contrast', 239, minval=0, maxval=255)
         self.vcomh = config.getint('vcomh', 0, minval=0, maxval=63)
         self.invert = config.getboolean('invert', False)
+        display_sizes = { 'full': 'full', 'half': 'half' }
+        display_size = config.getchoice('display_size', display_sizes, 'full')
+        if display_size == 'full':
+            self.hw_config = 0x12 # Sequential COM pin configuration
+        elif display_size == 'half':
+            self.hw_config = 0x22 # Alternative COM pin configuration and Enable COM Left/Right remap
     def init(self):
         self.reset.init()
         init_cmds = [
@@ -221,7 +227,7 @@ class SSD1306(DisplayBase):
             0x20, 0x02, # Set Memory addressing mode
             0xA1,       # Set Segment re-map
             0xC8,       # Set COM output scan direction
-            0xDA, 0x12, # Set COM pins hardware configuration
+            0xDA, self.hw_config, # Set COM pins hardware configuration
             0x81, self.contrast, # Set contrast control
             0xD9, 0xA1, # Set pre-charge period
             0xDB, self.vcomh, # Set VCOMH deselect level
